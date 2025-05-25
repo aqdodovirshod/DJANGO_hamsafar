@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Trip - Hamsafar{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body text-center">
+                <h2 class="card-title mb-4">Delete Trip</h2>
+                <p class="lead">Are you sure you want to delete this trip?</p>
+                <p><strong>From:</strong> {{ trip.start_location }}</p>
+                <p><strong>To:</strong> {{ trip.end_location }}</p>
+                <p><strong>Date:</strong> {{ trip.date|date:"F d, Y" }}</p>
+
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                        <a href="{% url 'my_trips' %}" class="btn btn-secondary">No, Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
