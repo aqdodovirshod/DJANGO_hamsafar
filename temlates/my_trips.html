@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}My Trips - Hamsafar{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>My Trips</h1>
+        <a href="{% url 'create_trip' %}" class="btn btn-success">Create New Trip</a>
+    </div>
+
+    {% if trips %}
+    <div class="row">
+        {% for trip in trips %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ trip.start_location }} to {{ trip.end_location }}</h5>
+                    <p class="card-text">
+                        <strong>Date:</strong> {{ trip.date|date:"F d, Y" }}<br>
+                        <strong>Seats:</strong> {{ trip.seats }}<br>
+                        <strong>Description:</strong> {{ trip.description }}
+                    </p>
+                    <div class="btn-group">
+                        <a href="{% url 'edit_trip' trip.id %}" class="btn btn-warning">Edit</a>
+                        <a href="{% url 'delete_trip' trip.id %}" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        You haven't created any trips yet.
+        <a href="{% url 'create_trip' %}" class="alert-link">Create your first trip</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
