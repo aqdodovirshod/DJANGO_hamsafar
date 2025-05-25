@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Trips - Hamsafar{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Search Trips</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-5">
+                    <input type="text" name="start" class="form-control" placeholder="Start Location"
+                        value="{{ start }}">
+                </div>
+                <div class="col-md-5">
+                    <input type="text" name="end" class="form-control" placeholder="End Location" value="{{ end }}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if trips %}
+    <div class="row">
+        {% for trip in trips %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ trip.start_location }} to {{ trip.end_location }}</h5>
+                    <p class="card-text">
+                        <strong>Date:</strong> {{ trip.date|date:"F d, Y" }}<br>
+                        <strong>Seats:</strong> {{ trip.seats }}<br>
+                        <strong>Posted by:</strong> {{ trip.user.username }}<br>
+                        <strong>Description:</strong> {{ trip.description }}
+                    </p>
+                    {% if user == trip.user %}
+                    <div class="btn-group">
+                        <a href="{% url 'edit_trip' trip.id %}" class="btn btn-warning">Edit</a>
+                        <a href="{% url 'delete_trip' trip.id %}" class="btn btn-danger">Delete</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        No trips found matching your search criteria.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
