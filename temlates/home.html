@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Hamsafar{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Welcome to Hamsafar</h1>
+
+{% if user.is_authenticated %}
+<div class="row">
+    <div class="col-md-8">
+        <h2>Recent Trips</h2>
+        {% if trips %}
+        <div class="row">
+            {% for trip in trips %}
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ trip.start_location }} to {{ trip.end_location }}</h5>
+                        <p class="card-text">
+                            <strong>Date:</strong> {{ trip.date|date:"F d, Y" }}<br>
+                            <strong>Seats:</strong> {{ trip.seats }}<br>
+                            <strong>Posted by:</strong> {{ trip.user.username }}<br>
+                            <strong>Description:</strong> {{ trip.description }}
+                        </p>
+                        {% if user == trip.user %}
+                        <div class="btn-group">
+                            <a href="{% url 'edit_trip' trip.id %}" class="btn btn-warning">Edit</a>
+                            <a href="{% url 'delete_trip' trip.id %}" class="btn btn-danger">Delete</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No trips available.</p>
+        {% endif %}
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Quick Actions</h5>
+                <a href="{% url 'create_trip' %}" class="btn btn-success mb-2 w-100">Create New Trip</a>
+                <a href="{% url 'search_trips' %}" class="btn btn-info mb-2 w-100">Search Trips</a>
+                <a href="{% url 'my_trips' %}" class="btn btn-primary w-100">My Trips</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="jumbotron">
+    <h1 class="display-4">Find Your Travel Companion</h1>
+    <p class="lead">Join Hamsafar to find travel companions or share your journey with others.</p>
+    <hr class="my-4">
+    <p>Create an account to start sharing your trips or find travel companions.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Sign Up Now</a>
+</div>
+{% endif %}
+{% endblock %}
